@@ -7,6 +7,7 @@
 
 My Synology has a VPN interface, and the original code was picking up the IP V4 address of the VPN, and not
 the IP address of the interface I wanted.
+*Note* the IP Address which is shown in the DDNS entry in synology is not the one which is actually sent to CloudFare !!!
 
 ## Table of contents
 

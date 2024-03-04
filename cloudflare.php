@@ -61,7 +61,8 @@ class updateCFDDNS
 		
         // Since DSM is only providing an IP(v4) which might not be for the correct interface
         // we use one found using Ipify.org requested on a specific interface.
-        $this->validateIp((string) $this->ipv4);
+		if($this->ipv4)           
+		  $this->validateIp((string) $this->ipv4);
         
         // Before runs DNS update checks API token is valid or not
         if(!$this->isCFTokenValid()) {
