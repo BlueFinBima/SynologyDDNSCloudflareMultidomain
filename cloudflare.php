@@ -48,14 +48,20 @@ class updateCFDDNS
         $this->apiKey = (string) $argv[2]; // CF Global API Key
         $hostnames = (string) $argv[3]; // example: example.com.uk---sundomain.example1.com---example2.com
 
-        $this->ipv6 = $this->getIpAddressIpify();
+        $this->ipv6 = $this->getIpAddressIpifyV6();
+        $this->ipv4 = $this->getIpAddressIpifyV4();
 
         if($this->ipv6)
             $this->validateIp((string) $this->ipv6); // Validates IPV6
-
+         /**
         // Since DSM is only providing an IP(v4) address (DSM 6/7 doesn't deliver IPV6)
         // I override above IPV4 detection & rely on DSM instead for now
         $this->validateIp((string) $argv[4]);
+		**/
+		
+        // Since DSM is only providing an IP(v4) which might not be for the correct interface
+        // we use one found using Ipify.org requested on a specific interface.
+        $this->validateIp((string) $this->ipv4);
         
         // Before runs DNS update checks API token is valid or not
         if(!$this->isCFTokenValid()) {
@@ -157,11 +163,33 @@ class updateCFDDNS
     * Get ip from ipify.org
     * Returns IPV6 address or false boolean in case IP6V is not found
     */
-    function getIpAddressIpify() {
+    function getIpAddressIpifyV6() {
 
         $curlhandle = curl_init();
         curl_setopt($curlhandle, CURLOPT_URL, "https://api64.ipify.org");
         curl_setopt($curlhandle, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+		/** Always use the real Interface to avoid getting the VPN IP address **/
+        curl_setopt($curlhandle, CURLOPT_INTERFACE, "bond0");
+        curl_setopt($curlhandle, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curlhandle, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curlhandle, CURLOPT_VERBOSE, false);
+        curl_setopt($curlhandle, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($curlhandle);
+        curl_close($curlhandle);
+        return $result;
+    }
+	
+    /*
+    * Get ip from ipify.org
+    * Returns IPV4 address or false boolean in case IPV4 is not found
+    */
+    function getIpAddressIpifyV4() {
+
+        $curlhandle = curl_init();
+        curl_setopt($curlhandle, CURLOPT_URL, "https://api64.ipify.org");
+        curl_setopt($curlhandle, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+		/** Always use the real Interface to avoid getting the VPN IP address **/
+        curl_setopt($curlhandle, CURLOPT_INTERFACE, "bond0");
         curl_setopt($curlhandle, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curlhandle, CURLOPT_TIMEOUT, 30);
         curl_setopt($curlhandle, CURLOPT_VERBOSE, false);

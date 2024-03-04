@@ -3,6 +3,11 @@
 
 > Documentation website: https://mrikirill.github.io/SynologyDDNSCloudflareMultidomain/
 
+## Reasons for Fork
+
+My Synology has a VPN interface, and the original code was picking up the IP V4 address of the VPN, and not
+the IP address of the interface I wanted.
+
 ## Table of contents
 
 * [What this script does](#what-this-script-does)
@@ -88,13 +93,13 @@ For assistance with vi commands, see:
 
 * For DSM Users
   ```
-  wget https://raw.githubusercontent.com/mrikirill/SynologyDDNSCloudflareMultidomain/master/cloudflare.php -O /usr/syno/bin/ddns/cloudflare.php && sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
+  wget https://raw.githubusercontent.com/bluefinbima/SynologyDDNSCloudflareMultidomain/master/cloudflare.php -O /usr/syno/bin/ddns/cloudflare.php && sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
   ```
 
 * For SRM Users
   Note: Ensure you are connected as root in your SSH session
   ```
-  wget https://raw.githubusercontent.com/mrikirill/SynologyDDNSCloudflareMultidomain/master/cloudflare.php -O /usr/syno/bin/ddns/cloudflare.php && chmod 755 /usr/syno/bin/ddns/cloudflare.php
+  wget https://raw.githubusercontent.com/bluefinbima/SynologyDDNSCloudflareMultidomain/master/cloudflare.php -O /usr/syno/bin/ddns/cloudflare.php && chmod 755 /usr/syno/bin/ddns/cloudflare.php
   ```
 
 	**Note:** For SRM users, you must connect to your device as root. No other username will allow these commands to run.
